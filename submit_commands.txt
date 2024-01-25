@@ -1,0 +1,4 @@
+nohup bash -c "model_ensemble -p -rt 30 -st 10 -ct 30 -v ensemble.yaml > nohup.out" &
+
+model_ensemble -p -rt 30 -st 10 -ct 30 -v ensemble.yaml
+

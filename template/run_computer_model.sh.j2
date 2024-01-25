@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#SBATCH --output={{ run.dir }}/model.%j.%N.out
+#SBATCH --error={{ run.dir }}/model.%j.%N.err
+#SBATCH --chdir={{ run.dir }}
+{% if run.email != "someone@example.com" %}
+#SBATCH --mail-type=begin,end,fail,requeue
+#SBATCH --mail-user={{ run.email }}
+{% endif %}
+#SBATCH --time={{ run.length }}
+#SBATCH --job-name={{ run.id }}
+#SBATCH --nodes={{ run.nodes }}
+{% if run.cluster == "gpu" %}#SBATCH --gres=gpu:1{% endif %}
+#SBATCH --partition={{ run.cluster }}
+#SBATCH --account={{ run.cluster }}
+#SBATCH --cpus-per-task={{ run.ntasks }}
+#SBATCH --mem=128gb
+
+##
+
+# run['idx'] is iteration variable
+# wc -l a batch recorder file
+
+if [ ! -f RUN_ITERS ]; then
+    ITERATION=0
+else
+    ITERATION=`wc -l RUN_ITERS | awk '{ print $1 }'`
+fi
+
+echo "Number of previous iterations $ITERATION"
+
+. ENVS
+
+ln -sf ../Manifest.toml
+ln -sf ../Project.toml
+ln -sf `realpath ../..`/shared.jl
+ln -sf `realpath ../..`/observe_sinusoid.jl
+ln -sf `realpath ../..`/run_computer_model.jl
+ln -sf `realpath ../..`/update_EKP.jl
+ln -sf `realpath ../output`
+ln -sf `realpath ../../input_data`
+
+echo "Iteration $ITERATION Model {{ run.idx }}"
+#julia --project -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/RJArthern/WAVI.jl.git",rev="ParallelDev"));Pkg.instantiate()'
+julia --project run_computer_model.jl {{ run.out_dir }} {{ run.data_path }} $ITERATION {{ run.idx + 1 }}
+
+echo -ne "\n{{ run.idx }}" >>RUN_ITERS

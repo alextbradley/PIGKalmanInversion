@@ -1,0 +1,36 @@
+# Define the priors in computational space
+# there are many other examples in test/TOMLInterface/uq_test_parameters.toml
+[weertman_c_prefactor]
+prior = "Parameterized(Normal(1.0,0.2))"
+constraint = "no_constraint()"
+description = """
+Prior for the Weertman C prefactor (premltiplies weertman C field). Bounded below by 0.1 (must be positive otherwise will fail)
+"""
+
+[glen_a_ref_prefactor]
+prior = "Parameterized(Normal(1.0,0.2))"
+constraint = "no_constraint()"
+description = """
+Prior for the glen a ref prefactor (premltiplies glen_a_ref field). Bounded below by 0.1 (must be positive otherwise sim will fail)
+"""
+
+[bump_amplitude]
+prior = "Parameterized(Normal(200.0,100.0))"
+constraint = "no_constraint()"
+description = """
+Prior for the amplitude of the 1945 bump. Unconstrained in general.
+"""
+
+[melt_rate_prefactor]
+prior = "Parameterized(Normal(8.0,2.5))"
+constraint = "no_constraint()"
+description = """
+Prior for the melt rate prefactor. V broad prior? Bounded below by 0.1
+"""
+
+[per_century_trend]
+prior = "Parameterized(Normal(100.0,100.0))"
+constraint = "no_constraint()"
+description = """
+Prior for the per century trend in forcing. Unconstrained and broad?
+"""

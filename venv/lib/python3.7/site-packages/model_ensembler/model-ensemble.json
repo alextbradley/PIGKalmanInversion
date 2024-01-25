@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.bas.ac.uk/schemas/json/model-ensemble.json",
+
+  "definitions": {
+
+    "batch": {
+      "type": "object",
+      "properties":  {
+        "name": { "type": "string" },
+        "templatedir": { "type":  "string" },
+        "templates": { "type": "array", "items": {
+          "type":  "string",
+          "pattern": "\\.j2$"
+        } },
+        "job_file": { "type":  "string" },
+        "cluster":  { "type": "string" },
+        "basedir": { "type": "string" },
+        "email": { "type": "string" },
+        "length": { "type": ["number", "string"] },
+        "maxjobs": { "type": "number" },
+        "maxruns": { "type": "number" },
+        "nodes": { "type": ["number", "string"] },
+        "ntasks": { "type": "number" },
+        "repeat": { "type": "boolean" },
+
+        "pre_batch": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/task"
+          }
+        },
+        "pre_run": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/task"
+          }
+        },
+        "runs": {
+          "type": "array",
+          "items": { "type": "object" },
+          "default": []
+        },
+        "post_run": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/task"
+          }
+        },
+        "post_batch": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/task"
+          }
+        }
+      },
+      "required": [
+        "name", "templates", "templatedir", "basedir",
+        "runs", "maxruns", "maxjobs"]
+    },
+
+    "task": {
+      "$id": "#task",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "args": { "type": "object" },
+        "value": { "type": "number" }
+      },
+      "required": ["name"]
+    }
+  },
+
+  "type": "object",
+
+  "properties":  {
+    "ensemble": { "type": "object",
+      "properties": {
+        "batch_config": { "type": "object" },
+        "vars": { "type": "object" },
+
+        "pre_process": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/task"
+          }
+        },
+        "post_process": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/task"
+          }
+        },
+
+        "batches": { "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/batch"
+          }}
+      },
+      "required": [ "batches" ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
