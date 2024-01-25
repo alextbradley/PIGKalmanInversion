@@ -11,7 +11,7 @@ Prior for the Weertman C prefactor (premltiplies weertman C field).
 prior = "Parameterized(Normal(0.0,1.0))"
 constraint = "no_constraint()"
 description = """
-value of the N(0,1) distribution (weertman C in ungrounded regions ~ 10^(\mu + \sigma * dimensionless_ungrounded_weermanC)). Note that mu and sigma are hard coded into the script (observe_ice_sheet.jl)
+value of the N(0,1) distribution (weertman C in ungrounded regions ~ 10^(mu + sigma * dimensionless_ungrounded_weermanC)). Note that mu and sigma are hard coded into the script (observe_ice_sheet.jl)
 """
 
 [glen_a_ref_prefactor]
