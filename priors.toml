@@ -15,10 +15,10 @@ value of the N(0,1) distribution (weertman C in ungrounded regions ~ 10^(mu + si
 """
 
 [glen_a_ref_prefactor]
-prior = "Parameterized(Normal(1.0,0.5))"
+prior = "Parameterized(Normal(0.0,0.5))"
 constraint = "no_constraint()"
 description = """
-Prior for the glen a ref prefactor (premltiplies glen_a_ref field). 
+Exponent for the glen a ref prefactor (premltiplies glen_a_ref field, with glen_a_ref -> 10^glen_a_ref_prefactor * glen_a_ref). 
 """
 
 [melt_rate_prefactor]

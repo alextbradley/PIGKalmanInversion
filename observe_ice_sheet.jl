@@ -137,18 +137,18 @@ weertman_c_prefactor = ensemble_parameters["weertman_c_prefactor"]
 weertman_c_prefactor = max(weertman_c_prefactor, 1e-3) #avoid negative weertman c
 weertman_c = weertman_c .* weertman_c_prefactor
 
-glen_a_ref =Array{Float64}(undef,nx,ny);
-read!(joinpath(dirname(@__FILE__), "input_data/glen_a_ref.bin"),glen_a_ref)
-glen_a_ref.=ntoh.(glen_a_ref)
+sec_per_year = 365.25*24*60^2
+glen_a_ref= 4.9e-16 *sec_per_year * 1.0e-9 #standard value used in WAVI 
 glen_a_ref_prefactor = ensemble_parameters["glen_a_ref_prefactor"]
-weertman_c_prefactor = max(weertman_c_prefactor, 1e-3) #avoid negative glen a
-glen_a_ref = glen_a_ref_prefactor .* glen_a_ref
+
+glen_a_ref = 10^(glen_a_ref_prefactor) .* glen_a_ref
+
 
 # adjust the weertman c in floating areas
 dimensionless_ungrounded_weertmanC_exponent = ensemble_parameters["dimensionless_ungrounded_weertmanC_exponent"]
 mu_wc = 4.3
 sigma_wc = 0.5
-weertman_c[weertman_c .== 10000] = 10 .^ (mu_wc + sigma_wc * dimensionless_ungrounded_weertmanC_exponent);
+weertman_c[weertman_c .== 10000] .= 10 .^ (mu_wc + sigma_wc * dimensionless_ungrounded_weertmanC_exponent);
 
 params = Params(accumulation_rate = accumulation_rate,
                                   glen_a_ref = glen_a_ref,
